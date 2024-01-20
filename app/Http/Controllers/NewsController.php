@@ -7,9 +7,23 @@ use App\Http\Requests\News\UpdateNewsRequest;
 use App\Models\News;
 use App\Service\News\NewsService;
 use Exception;
+use http\Client\Response;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Log;
-
+/**
+ * @OA\Info(
+ *      version="1.0.0",
+ *      title="News API",
+ *      description="L5 Swagger OpenApi description",
+ *
+ *     @OA\License(
+ *         name="Apache 2.0",
+ *         url="https://www.apache.org/licenses/LICENSE-2.0.html"
+ *     )
+ * )
+ *
+ *
+ */
 class NewsController extends Controller
 {
     public function __construct(
@@ -19,15 +33,49 @@ class NewsController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of the news.
+     *
+     * @return Response
+     * @OA\Get(
+     *      path="/api/news",
+     *      operationId="getNewsList",
+     *      tags={"News"},
+     *      summary="Get list of news",
+     *      description="Returns list of news",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad request",
+     *      )
+     * )
      */
     public function index()
     {
-        return News::all();
+        $news= News::all();
+        return response()->json(['news' => $news]);
     }
-
     /**
-     * Store a newly created resource in storage.
+     * Display a listing of the news.
+     *
+     * @return Response
+     * @OA\Post(
+     *      path="/api/news",
+     *      operationId="storeNewNews",
+     *      tags={"NewNews"},
+     *      summary="Create a news",
+     *      description="Returns a news",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad request",
+     *      )
+     * )
      */
     public function store(StoreNewsRequest $request)
     {
@@ -42,17 +90,10 @@ class NewsController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $news)
     {
         return News::where('id', $news)->get();
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateNewsRequest $request, string $news)
     {
         $data = $request->validated();
@@ -65,9 +106,6 @@ class NewsController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $news)
     {
         try {
