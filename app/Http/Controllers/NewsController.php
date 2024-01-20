@@ -32,11 +32,14 @@ class NewsController extends Controller
     public function store(StoreNewsRequest $request)
     {
         $data = $request->validated();
-
         $user = $request->user();
+        try {
+            $news = $this->newsService->createNews($data, $user);
+            return response(['status' => 'news created', 'title News' => $news->title], 201);
+        } catch (Exception $exception) {
 
-        $news = $this->newsService->createNews($data, $user);
-        return response(['status' => 'news created', 'title News' => $news->title], 201);
+            return response()->json(['error' => $exception->getMessage()], 400);
+        }
     }
 
     /**
