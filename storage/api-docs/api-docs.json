@@ -803,7 +803,6 @@
                                         "user": {
                                             "type": "object",
                                             "example": {
-                                                "id": 1,
                                                 "name": "Yaroslav",
                                                 "email": "yarik@yarik",
                                                 "role": 0
@@ -823,6 +822,25 @@
                         "description": "Invalid username/password supplied"
                     }
                 }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Logout"
+                ],
+                "summary": "Logout user from system",
+                "operationId": "ad0abc630daed9d1681c9c878df886a5",
+                "responses": {
+                    "200": {
+                        "description": "Logout"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
             }
         }
     },

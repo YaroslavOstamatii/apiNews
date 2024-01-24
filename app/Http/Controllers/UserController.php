@@ -11,6 +11,7 @@ use App\Service\User\UserService;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 /**
@@ -102,13 +103,9 @@ class UserController extends Controller
     protected function register(StoreUserRequest $request)
     {
         $data = $request->validated();
-        $user = $this->userService->registerUser($data);
-        $token = $user->createToken('token-name')->plainTextToken;
+        $responce = $this->userService->registerUser($data);
 
-        return response([
-            'user' => $user->refresh(),
-            'token' => $token
-        ], 201);
+        return $responce;
     }
 
     public function logout(Request $request)

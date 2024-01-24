@@ -228,6 +228,17 @@ use App\Http\Controllers\Controller;
  *           description="Invalid username/password supplied"
  *       )
  *   )
+ * @OA\Post(
+ *        path="/api/logout",
+ *        tags={"Logout"},
+ *        summary="Logout user from system",
+ *         security={{"bearer": {}}},
+ *       @OA\Response(
+ *            response=200,
+ *            description="Logout",
+ *        )
+ *
+ *    )
  */
 
 class UserController extends Controller

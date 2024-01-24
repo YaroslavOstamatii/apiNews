@@ -32,7 +32,11 @@ class UserService
             'password' => Hash::make($data['password']),
             'role' => $data['role'],
         ]);
-        return $user;
+        $token=$user->createToken('token-name', ['*'], now()->addHour())->plainTextToken;
+        return response([
+            'user'=>$user,
+            'token'=>$token
+        ],200);
     }
 public function loginUser(array $data)
     {
@@ -43,7 +47,7 @@ public function loginUser(array $data)
                 'message'=>'incorrect login details',
             ],401);
         }
-        $token=$user->createToken('token-name')->plainTextToken;
+        $token=$user->createToken('token-name', ['*'], now()->addHour())->plainTextToken;
         return response([
             'user'=>$user,
             'token'=>$token
