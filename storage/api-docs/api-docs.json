@@ -1,0 +1,726 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Swagger NewsApi",
+        "description": "News Api",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/news": {
+            "get": {
+                "tags": [
+                    "News"
+                ],
+                "summary": "Get all new news",
+                "operationId": "df53f5fbfbc3a8e5a3fadee520e9b733",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "title": {
+                                                "type": "string",
+                                                "example": "News Text"
+                                            },
+                                            "text": {
+                                                "type": "string",
+                                                "example": "News Text"
+                                            },
+                                            "image": {
+                                                "type": "string",
+                                                "example": "img"
+                                            },
+                                            "is_active": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "published_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "example": "1900-01-01 12:00:00"
+                                            },
+                                            "user_id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "example": "2024-01-21T12:58:45.000000Z"
+                                            },
+                                            "updated_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "example": "2024-01-21T12:58:45.000000Z"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "News"
+                ],
+                "summary": "Store a new news",
+                "operationId": "e2dbda79b1ec964876c7ae09b6777820",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "title": {
+                                                "type": "string",
+                                                "example": "News Title"
+                                            },
+                                            "text": {
+                                                "type": "string",
+                                                "example": "News Text"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "title": {
+                                                    "type": "string",
+                                                    "example": "News Text"
+                                                },
+                                                "text": {
+                                                    "type": "string",
+                                                    "example": "News Text"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/news/{post}": {
+            "get": {
+                "tags": [
+                    "News"
+                ],
+                "summary": "Get news by id",
+                "operationId": "95ed817bbdd270fcd3c63046a17b1112",
+                "parameters": [
+                    {
+                        "name": "post",
+                        "in": "path",
+                        "description": "news ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "example": "News Text"
+                                        },
+                                        "text": {
+                                            "type": "string",
+                                            "example": "News Text"
+                                        },
+                                        "image": {
+                                            "type": "string",
+                                            "example": "img"
+                                        },
+                                        "is_active": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "published_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "1900-01-01 12:00:00"
+                                        },
+                                        "user_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2024-01-21T12:58:45.000000Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2024-01-21T12:58:45.000000Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "News"
+                ],
+                "summary": "Update news by id",
+                "operationId": "dc3b7718a4568977fe1788c9d283207c",
+                "parameters": [
+                    {
+                        "name": "post",
+                        "in": "path",
+                        "description": "news ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "title": {
+                                                "type": "string",
+                                                "example": "Edit News Title"
+                                            },
+                                            "text": {
+                                                "type": "string",
+                                                "example": "Edit News Text"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "example": "News Text"
+                                        },
+                                        "text": {
+                                            "type": "string",
+                                            "example": "News Text"
+                                        },
+                                        "image": {
+                                            "type": "string",
+                                            "example": "img"
+                                        },
+                                        "is_active": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "published_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "1900-01-01 12:00:00"
+                                        },
+                                        "user_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2024-01-21T12:58:45.000000Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2024-01-21T12:58:45.000000Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "News"
+                ],
+                "summary": "Delete news by id",
+                "operationId": "ab8cea755cd2f2326e821a50bab49ff2",
+                "parameters": [
+                    {
+                        "name": "post",
+                        "in": "path",
+                        "description": "news ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "News deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "not found"
+                    }
+                }
+            }
+        },
+        "/api/user": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get all users",
+                "operationId": "b8e438773a13bec344011b140c909411",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "example": "Yarik"
+                                            },
+                                            "email": {
+                                                "type": "string",
+                                                "example": "yarik@yarik"
+                                            },
+                                            "role": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "example": "2024-01-21T12:58:45.000000Z"
+                                            },
+                                            "updated_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "example": "2024-01-21T12:58:45.000000Z"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "users empty"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Store a new user",
+                "operationId": "c81166c37bc4122ee079a75d0b7c2f09",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "name": {
+                                                "type": "string",
+                                                "example": "Yarik"
+                                            },
+                                            "email": {
+                                                "type": "string",
+                                                "example": "yarik@yarik"
+                                            },
+                                            "password": {
+                                                "type": "string",
+                                                "example": "1234qwe"
+                                            },
+                                            "password_confirmation": {
+                                                "type": "string",
+                                                "example": "1234qwe"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Yarik"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "yarik@yarik"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user/{user}": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get user by id",
+                "operationId": "061657bcbd30151e573bb4985f089707",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "user ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Yarik"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "yarik@yarik"
+                                        },
+                                        "role": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2024-01-21T12:58:45.000000Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2024-01-21T12:58:45.000000Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "not found"
+                    },
+                    "400": {
+                        "description": "error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Update user by id",
+                "operationId": "24fa8042770188d4202bfc8ed971f3fd",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "user ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "name": {
+                                                "type": "string",
+                                                "example": "Yarik"
+                                            },
+                                            "email": {
+                                                "type": "string",
+                                                "example": "yarik@yarik"
+                                            },
+                                            "password": {
+                                                "type": "string",
+                                                "example": "qqqq1111"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Yarik"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "yarik@yarik"
+                                        },
+                                        "role": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2024-01-21T12:58:45.000000Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2024-01-21T12:58:45.000000Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Delete user by id",
+                "operationId": "2a07d05fd5221f56f9e81fe1fac00ae8",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "user ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "News deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "not found"
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Login"
+                ],
+                "summary": "Logs user into system",
+                "operationId": "7457e30c8351093fa2d7df823e62298e",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "yarik@yarik"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "qwerty123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "type": "string",
+                                            "example": "News deleted successfully"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "News deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid username/password supplied"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearer": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    }
+}

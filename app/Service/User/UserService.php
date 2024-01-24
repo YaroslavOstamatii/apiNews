@@ -9,16 +9,18 @@ class UserService
 {
     public function createUser(array $data)
     {
-        $news = new User();
-        $news->title = $data['title'];
-        $news->text = $data['text'];
-        $news->save();
+        $data['password']=Hash::make($data['password']);
+        $data['role']=1;
+        $user=User::firstOrCreate(['email'=>$data['email']],$data);
+        return $user;
     }
 
-    public function updateUser($data, $id): void
+    public function updateUser($data, $user)
     {
-        $user = User::find($id);
+        $user = User::findOrFail($user);
+
         $user->update($data);
+        return $user;
     }
 
 
@@ -46,5 +48,9 @@ public function loginUser(array $data)
             'user'=>$user,
             'token'=>$token
         ],201);
+    }
+    public function deleteUser(User $user)
+    {
+        $user->delete();
     }
 }

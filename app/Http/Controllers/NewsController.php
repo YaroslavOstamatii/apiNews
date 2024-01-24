@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\News\StoreNewsRequest;
 use App\Http\Requests\News\UpdateNewsRequest;
+use App\Http\Resources\News\NewsResource;
 use App\Models\News;
 use App\Service\News\NewsService;
 use Exception;
@@ -23,7 +24,9 @@ class NewsController extends Controller
      */
     public function index()
     {
-        return News::all();
+        $news = News::all();
+
+        return $news->isEmpty() ? response()->json(['error' => 'News is empty'], 404) : response()->json($news);
     }
 
     /**
@@ -33,10 +36,11 @@ class NewsController extends Controller
     {
         $data = $request->validated();
 
-        $user = $request->user();
+        $user = $request->user() ?? 2;
 
         $news = $this->newsService->createNews($data, $user);
-        return response(['status' => 'news created', 'title News' => $news->title], 201);
+        return NewsResource::make($news);
+//        return response()->json(['status' => 'news created', 'title News' => $news->title], 201);
     }
 
     /**
@@ -44,7 +48,17 @@ class NewsController extends Controller
      */
     public function show(string $news)
     {
-        return News::where('id', $news)->get();
+
+        try {
+            $news = News::findOrFail($news);
+            return response()->json($news, 200);
+        } catch (ModelNotFoundException $exception) {
+
+            return response()->json(['error' => 'News not found'], 404);
+        } catch (Exception $exception) {
+
+            return response()->json(['error' => $exception->getMessage()], 400);
+        }
     }
 
     /**
@@ -56,6 +70,9 @@ class NewsController extends Controller
         try {
             $news = $this->newsService->updateNews($data, $news);
             return response()->json($news, 200);
+        } catch (ModelNotFoundException $exception) {
+
+            return response()->json(['error' => 'News not found'], 404);
         } catch (Exception $exception) {
 
             return response()->json(['error' => $exception->getMessage()], 400);
@@ -71,10 +88,10 @@ class NewsController extends Controller
             $news = News::findOrFail($news);
             $this->newsService->deleteNews($news);
 
-            return response(['message' => 'News deleted successfully'], 200);
+            return response()->json(['message' => 'News deleted successfully'], 200);
         } catch (ModelNotFoundException $exception) {
 
-            return response(['error' => 'News not found'], 404);
+            return response()->json(['error' => 'News not found'], 404);
         } catch (Exception $exception) {
             Log::error($exception->getMessage());
 

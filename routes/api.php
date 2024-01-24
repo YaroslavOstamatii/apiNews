@@ -17,14 +17,14 @@ use Illuminate\Support\Facades\Route;
 
 //Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //    return $request->user();
-//});
+//});->middleware(['auth:sanctum', 'admin'])
 
 Route::post('/register', [UserController::class, 'register']);
-Route::post('/login', [UserController::class, 'login']);
+Route::post('/login', [UserController::class, 'login'])->name('login');
 Route::post('/logout', [UserController::class, 'logout'])->middleware(['auth:sanctum']);
 Route::get('/news', [NewsController::class, 'index']);
 
-Route::prefix('news')->middleware(['auth:sanctum', 'admin'])->group(function () {
+Route::prefix('news')->group(function () {
     Route::post('/', [NewsController::class, 'store']);
     Route::get('/{id}', [NewsController::class, 'show']);
     Route::put('/{id}', [NewsController::class, 'update']);
