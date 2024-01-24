@@ -35,6 +35,7 @@ class UserController extends Controller
     {
         $data = $request->validated();
         $user=$this->userService->createUser($data);
+
         return new UserResource($user);
     }
 
