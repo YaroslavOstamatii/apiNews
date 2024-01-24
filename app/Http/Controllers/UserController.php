@@ -25,6 +25,7 @@ class UserController extends Controller
     public function index()
     {
         $user=User::all();
+
         return $user->isEmpty() ? response()->json(['error' => 'users is empty'], 404) : response()->json($user);
     }
 
