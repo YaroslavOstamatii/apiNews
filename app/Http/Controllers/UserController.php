@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Service\User\UserService;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -25,7 +26,7 @@ class UserController extends Controller
     {
     }
 
-    public function index()
+    public function index():JsonResponse
     {
         $user=User::all();
 
@@ -35,7 +36,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUserRequest $request)
+    public function store(StoreUserRequest $request):UserResource
     {
         $data = $request->validated();
         $user=$this->userService->createUser($data);
@@ -46,7 +47,7 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $user)
+    public function show(string $user):JsonResponse
     {
         try {
             $user = User::findOrFail($user);
@@ -64,9 +65,10 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRequest $request, string $user)
+    public function update(UpdateRequest $request, string $user):JsonResponse
     {
         $data = $request->validated();
+
         try {
             $user = $this->userService->updateUser($data, $user);
             return response()->json($user, 200);
@@ -83,7 +85,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $user)
+    public function destroy(string $user):JsonResponse
     {
         try {
             $user = User::findOrFail($user);
@@ -96,26 +98,33 @@ class UserController extends Controller
         } catch (Exception $exception) {
             Log::error($exception->getMessage());
 
-            return response()->json(['error' => 'Failed to delete news'], 400);
+            return response()->json(['error' => 'Failed to delete user'], 400);
         }
     }
 
-    protected function register(StoreUserRequest $request)
+    protected function register(StoreUserRequest $request):JsonResponse
     {
         $data = $request->validated();
-        $responce = $this->userService->registerUser($data);
+        try {
+            $responce = $this->userService->registerUser($data);
 
-        return $responce;
+            return $responce;
+
+        } catch (Exception $exception) {
+            Log::error($exception->getMessage());
+
+            return response()->json(['error' => $exception->getMessage()], 400);
+        }
     }
 
-    public function logout(Request $request)
+    public function logout(Request $request):JsonResponse
     {
         auth()->user()->tokens()->delete();
 
-        return ['message' => 'logOut'];
+        return response()->json(['message' => 'logOut'], 200);
     }
 
-    protected function login(LoginUserRequest $request)
+    protected function login(LoginUserRequest $request):JsonResponse
     {
         $data = $request->validated();
         $responce=$this->userService->loginUser($data);

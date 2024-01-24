@@ -71,16 +71,17 @@ use App\Http\Controllers\Controller;
  *     tags={"User"},
  *     summary="Store a new user",
  *     @OA\RequestBody(
- *         @OA\JsonContent(
- *             allOf={
- *                 @OA\Schema(
- *                   @OA\Property(property="name", type="string", example="Yarik"),
- *                   @OA\Property(property="email", type="string", example="yarik@yarik"),
- *                   @OA\Property(property="password", type="string", example="1234qwe"),
- *                   @OA\Property(property="password_confirmation", type="string", example="1234qwe"),
- *                 )
- *             }
- *         )
+ *               @OA\MediaType(
+ *               mediaType="application/x-www-form-urlencoded",
+ *                    @OA\Schema (
+ *                        type="object",
+ *                        @OA\Property(property="name", type="string", example="Yarik"),
+ *                        @OA\Property(property="email", type="string", example="yarik@yarik"),
+ *                        @OA\Property(property="role", type="integer", example=1),
+ *                        @OA\Property(property="password", type="string", example="1234qwe"),
+ *                        @OA\Property(property="password_confirmation", type="string", example="1234qwe"),
+ *                    )
+ *               )
  *     ),
  *     @OA\Response(
  *         response=201,
@@ -90,6 +91,7 @@ use App\Http\Controllers\Controller;
  *                 @OA\Property(property="id", type="integer", example=1),
  *                    @OA\Property(property="name", type="string", example="Yarik"),
  *                    @OA\Property(property="email", type="string", example="yarik@yarik"),
+ *                    @OA\Property(property="role", type="integer", example=1),
  *             ),
  *         ),
  *     ),
@@ -108,15 +110,17 @@ use App\Http\Controllers\Controller;
  *         example=1,
  *     ),
  *     @OA\RequestBody(
- *         @OA\JsonContent(
- *             allOf={
- *                 @OA\Schema(
- *                     @OA\Property(property="name", type="string", example="Yarik"),
- *                     @OA\Property(property="email", type="string", example="yarik@yarik"),
- *                     @OA\Property(property="password", type="string", example="qqqq1111"),
- *                 )
- *             }
- *         )
+ *               @OA\MediaType(
+ *                mediaType="application/json",
+ *                     @OA\Schema (
+ *                         type="object",
+ *                        @OA\Property(property="name", type="string", example="Yarik"),
+ *                         @OA\Property(property="email", type="string", example="yarik@yarik"),
+ *                         @OA\Property(property="role", type="integer", example=1),
+ *                         @OA\Property(property="password", type="string", example="1234qwe"),
+ *                         @OA\Property(property="password_confirmation", type="string", example="1234qwe"),
+ *                     )
+ *                )
  *     ),
  *     @OA\Response(
  *         response=200,

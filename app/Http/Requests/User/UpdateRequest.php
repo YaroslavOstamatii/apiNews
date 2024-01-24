@@ -25,6 +25,7 @@ class UpdateRequest extends FormRequest
             'name' => ['string'],
             'email' => ['string', 'email', 'max:255'],
             'password' => ['string', 'min:8'],
+            'role' => ['integer'],
         ];
     }
 }

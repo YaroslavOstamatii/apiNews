@@ -36,11 +36,10 @@ class NewsController extends Controller
     {
         $data = $request->validated();
 
-        $user = $request->user() ?? 2;
+        $user = $request->user();
 
         $news = $this->newsService->createNews($data, $user);
         return NewsResource::make($news);
-//        return response()->json(['status' => 'news created', 'title News' => $news->title], 201);
     }
 
     /**

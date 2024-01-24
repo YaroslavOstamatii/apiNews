@@ -129,7 +129,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
             }
         },
         "/api/news/{post}": {
@@ -203,7 +208,12 @@
                     "404": {
                         "description": "not found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -298,7 +308,12 @@
                     "404": {
                         "description": "not found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -335,7 +350,12 @@
                     "404": {
                         "description": "not found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
             }
         },
         "/api/user": {
@@ -405,31 +425,31 @@
                 "operationId": "c81166c37bc4122ee079a75d0b7c2f09",
                 "requestBody": {
                     "content": {
-                        "application/json": {
+                        "application/x-www-form-urlencoded": {
                             "schema": {
-                                "allOf": [
-                                    {
-                                        "properties": {
-                                            "name": {
-                                                "type": "string",
-                                                "example": "Yarik"
-                                            },
-                                            "email": {
-                                                "type": "string",
-                                                "example": "yarik@yarik"
-                                            },
-                                            "password": {
-                                                "type": "string",
-                                                "example": "1234qwe"
-                                            },
-                                            "password_confirmation": {
-                                                "type": "string",
-                                                "example": "1234qwe"
-                                            }
-                                        },
-                                        "type": "object"
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Yarik"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "yarik@yarik"
+                                    },
+                                    "role": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "1234qwe"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "example": "1234qwe"
                                     }
-                                ]
+                                },
+                                "type": "object"
                             }
                         }
                     }
@@ -454,6 +474,10 @@
                                                 "email": {
                                                     "type": "string",
                                                     "example": "yarik@yarik"
+                                                },
+                                                "role": {
+                                                    "type": "integer",
+                                                    "example": 1
                                                 }
                                             },
                                             "type": "object"
@@ -559,25 +583,29 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "allOf": [
-                                    {
-                                        "properties": {
-                                            "name": {
-                                                "type": "string",
-                                                "example": "Yarik"
-                                            },
-                                            "email": {
-                                                "type": "string",
-                                                "example": "yarik@yarik"
-                                            },
-                                            "password": {
-                                                "type": "string",
-                                                "example": "qqqq1111"
-                                            }
-                                        },
-                                        "type": "object"
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Yarik"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "yarik@yarik"
+                                    },
+                                    "role": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "1234qwe"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "example": "1234qwe"
                                     }
-                                ]
+                                },
+                                "type": "object"
                             }
                         }
                     }

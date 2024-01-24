@@ -10,15 +10,11 @@ use Illuminate\Support\Facades\Log;
 
 class NewsService
 {
-    public function createNews(array $data,  $user)
+    public function createNews(array $data,  User $user)
     {
         $news = new News();
         $news->title = $data['title'];
         $news->text = $data['text'];
-        if($user !== User::class){
-            $user=User::find($user);
-
-        }
         $news->user()->associate($user);
         $news->save();
         return $news;

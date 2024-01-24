@@ -27,7 +27,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout', [UserController::class, 'logout']);
 });
 
-Route::prefix('news')->group(function () {
+Route::prefix('news')->middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::post('/', [NewsController::class, 'store']);
     Route::get('/{id}', [NewsController::class, 'show']);
     Route::put('/{id}', [NewsController::class, 'update']);

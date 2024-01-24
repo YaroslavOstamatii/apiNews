@@ -65,6 +65,7 @@ use App\Http\Controllers\Controller;
  *         response=404,
  *         description="not found"
  *     ),
+ *     security={{"bearer": {}}}
  * ),
  *
  * @OA\Post(
@@ -92,6 +93,7 @@ use App\Http\Controllers\Controller;
  *             ),
  *         ),
  *     ),
+ *     security={{"bearer": {}}}
  * ),
  *
  * @OA\Put(
@@ -134,6 +136,7 @@ use App\Http\Controllers\Controller;
  *         response=404,
  *         description="not found"
  *     ),
+ *     security={{"bearer": {}}}
  * ),
  *
  * @OA\Delete(
@@ -158,6 +161,7 @@ use App\Http\Controllers\Controller;
  *         response=404,
  *         description="not found"
  *     ),
+ *     security={{"bearer": {}}}
  * ),
  */
 
