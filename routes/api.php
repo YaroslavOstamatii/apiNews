@@ -19,10 +19,13 @@ use Illuminate\Support\Facades\Route;
 //    return $request->user();
 //});->middleware(['auth:sanctum', 'admin'])
 
-Route::post('/register', [UserController::class, 'register']);
+Route::post('/register', [UserController::class, 'register'])->name('register');
 Route::post('/login', [UserController::class, 'login'])->name('login');
-Route::post('/logout', [UserController::class, 'logout'])->middleware(['auth:sanctum']);
 Route::get('/news', [NewsController::class, 'index']);
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/logout', [UserController::class, 'logout']);
+});
 
 Route::prefix('news')->group(function () {
     Route::post('/', [NewsController::class, 'store']);
@@ -37,6 +40,5 @@ Route::prefix('user')->middleware(['auth:sanctum', 'admin'])->group(function () 
     Route::get('/{id}', [UserController::class, 'show']);
     Route::put('/{id}', [UserController::class, 'update']);
     Route::delete('/{id}', [UserController::class, 'destroy']);
-
 });
 

@@ -13,7 +13,9 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-
+/**
+ *
+*/
 class UserController extends Controller
 {
     public function __construct(
@@ -47,6 +49,7 @@ class UserController extends Controller
     {
         try {
             $user = User::findOrFail($user);
+
             return response()->json($user, 200);
         } catch (ModelNotFoundException $exception) {
 
@@ -101,8 +104,9 @@ class UserController extends Controller
         $data = $request->validated();
         $user = $this->userService->registerUser($data);
         $token = $user->createToken('token-name')->plainTextToken;
+
         return response([
-            'user' => $user,
+            'user' => $user->refresh(),
             'token' => $token
         ], 201);
     }
@@ -118,6 +122,7 @@ class UserController extends Controller
     {
         $data = $request->validated();
         $responce=$this->userService->loginUser($data);
+
         return $responce;
 
     }

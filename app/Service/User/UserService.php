@@ -30,7 +30,7 @@ class UserService
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'role' => User::ROLE_READER,
+            'role' => $data['role'],
         ]);
         return $user;
     }
@@ -40,14 +40,14 @@ public function loginUser(array $data)
 
         if(!$user || !Hash::check($data['password'],$user->password)){
             return response([
-                'message'=>'bad creds',
+                'message'=>'incorrect login details',
             ],401);
         }
         $token=$user->createToken('token-name')->plainTextToken;
         return response([
             'user'=>$user,
             'token'=>$token
-        ],201);
+        ],200);
     }
     public function deleteUser(User $user)
     {

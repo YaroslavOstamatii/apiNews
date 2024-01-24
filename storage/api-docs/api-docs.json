@@ -464,7 +464,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
             }
         },
         "/api/user/{user}": {
@@ -619,7 +624,12 @@
                     "404": {
                         "description": "not found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -656,7 +666,12 @@
                     "404": {
                         "description": "not found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
             }
         },
         "/api/login": {
@@ -693,12 +708,110 @@
                                 "schema": {
                                     "properties": {
                                         "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Yarik"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "yarik@yarik"
+                                                },
+                                                "role": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2024-01-21T12:58:45.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2024-01-21T12:58:45.000000Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "token": {
                                             "type": "string",
                                             "example": "News deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "incorrect login details"
+                    }
+                }
+            }
+        },
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "Register"
+                ],
+                "summary": "Register user in system",
+                "operationId": "6a2220445b080123033e9f77b99033b7",
+                "requestBody": {
+                    "description": "inputs for regisrer",
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Yaroslav"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "yarik@yarik"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "qwerty123"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "example": "qwerty123"
+                                    },
+                                    "role": {
+                                        "type": "integer",
+                                        "example": 0
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "type": "object",
+                                            "example": {
+                                                "id": 1,
+                                                "name": "Yaroslav",
+                                                "email": "yarik@yarik",
+                                                "role": 0
+                                            }
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "News deleted successfully"
+                                            "example": "User created successfully"
                                         }
                                     },
                                     "type": "object"
