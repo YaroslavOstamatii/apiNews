@@ -21,6 +21,7 @@ class CreateAdmin extends Command
             'email' => $email,
             'password' => bcrypt($password),
             'role' => User::ROLE_ADMIN,
+
         ]);
 //        // command for artisan tinker
 //        $user = User::create([
