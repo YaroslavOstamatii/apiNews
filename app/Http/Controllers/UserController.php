@@ -3,18 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\User\StoreUserRequest;
-use App\Http\Requests\User\LoginUserRequest;
 use App\Http\Requests\User\UpdateRequest;
 use App\Http\Resources\User\UserResource;
 use App\Models\User;
 use App\Service\User\UserService;
 use Exception;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+
 /**
  *
 */
@@ -22,8 +18,8 @@ class UserController extends Controller
 {
     public function __construct(
         private readonly UserService $userService,
-    )
-    {
+    ){
+//        $this->middleware('admin')->only(['store', 'update']);
     }
 
     public function index():JsonResponse
@@ -53,9 +49,6 @@ class UserController extends Controller
             $user = User::findOrFail($user);
 
             return response()->json($user, 200);
-        } catch (ModelNotFoundException $exception) {
-
-            return response()->json(['error' => 'User not found'], 404);
         } catch (Exception $exception) {
 
             return response()->json(['error' => $exception->getMessage()], 400);
@@ -67,14 +60,12 @@ class UserController extends Controller
      */
     public function update(UpdateRequest $request, string $user):JsonResponse
     {
+//        $this->authorize('update', auth()->user());
         $data = $request->validated();
 
         try {
             $user = $this->userService->updateUser($data, $user);
             return response()->json($user, 200);
-        } catch (ModelNotFoundException $exception) {
-
-            return response()->json(['error' => 'User not found'], 404);
         } catch (Exception $exception) {
 
             return response()->json(['error' => $exception->getMessage()], 400);
@@ -92,9 +83,6 @@ class UserController extends Controller
             $this->userService->deleteUser($user);
 
             return response()->json(['message' => 'User deleted successfully'], 200);
-        } catch (ModelNotFoundException $exception) {
-
-            return response()->json(['error' => 'User not found'], 404);
         } catch (Exception $exception) {
             Log::error($exception->getMessage());
 
@@ -102,34 +90,5 @@ class UserController extends Controller
         }
     }
 
-    protected function register(StoreUserRequest $request):JsonResponse
-    {
-        $data = $request->validated();
-        try {
-            $responce = $this->userService->registerUser($data);
 
-            return $responce;
-
-        } catch (Exception $exception) {
-            Log::error($exception->getMessage());
-
-            return response()->json(['error' => $exception->getMessage()], 400);
-        }
-    }
-
-    public function logout(Request $request):JsonResponse
-    {
-        auth()->user()->tokens()->delete();
-
-        return response()->json(['message' => 'logOut'], 200);
-    }
-
-    protected function login(LoginUserRequest $request):JsonResponse
-    {
-        $data = $request->validated();
-        $responce=$this->userService->loginUser($data);
-
-        return $responce;
-
-    }
 }

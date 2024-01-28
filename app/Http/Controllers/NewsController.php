@@ -15,8 +15,7 @@ class NewsController extends Controller
 {
     public function __construct(
         private readonly NewsService $newsService,
-    )
-    {
+    ){
     }
 
     /**

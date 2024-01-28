@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\User;
+use App\Models\Admin;
 use Illuminate\Console\Command;
 
 class CreateAdmin extends Command
@@ -16,20 +16,13 @@ class CreateAdmin extends Command
         $email = $this->ask('Enter the admin email:');
         $password = $this->secret('Enter the admin password:');
 
-        $user = User::create([
+        $admin = Admin::create([
             'name' => $name,
             'email' => $email,
             'password' => bcrypt($password),
-            'role' => User::ROLE_ADMIN,
         ]);
-//        // command for artisan tinker
-//        $user = User::create([
-//            'name' => $name,
-//            'email' => $email,
-//            'password' => bcrypt($password),
-//            'role' => User::ROLE_ADMIN,
-//        ]);
-
+        $token=$admin->createToken('token-name')->plainTextToken;
+        $this->info('token = '.$token);
 
         $this->info('Admin user created successfully!');
     }

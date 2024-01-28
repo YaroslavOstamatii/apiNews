@@ -11,7 +11,7 @@ class UserService
     public function createUser(array $data):User
     {
         $data['password']=Hash::make($data['password']);
-        $user=User::firstOrCreate(['email'=>$data['email']],$data);
+        $user=User::create($data);
         return $user;
     }
 
@@ -29,7 +29,6 @@ class UserService
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'role' => $data['role'],
         ]);
         $token=$user->createToken('token-name', ['*'], now()->addHour())->plainTextToken;
 

@@ -1,8 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\RegisterUserController;
-use App\Http\Controllers\NewsController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,14 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/register', [RegisterUserController::class, 'register']);
-Route::post('/login', [RegisterUserController::class, 'login']);
 
-Route::middleware(['auth:sanctum'])->group(function () {
-    Route::apiResource('user',UserController::class);
-    Route::apiResource('news',NewsController::class);
-
-    Route::post('/logout', [RegisterUserController::class, 'logout']);
+Route::middleware(['auth:sanctum','admin'])->group(function () {
+    Route::apiResource('admin',AdminController::class);
 });
+
 
 
