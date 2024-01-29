@@ -5,6 +5,7 @@ namespace App\Service\User;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\UnauthorizedException;
 
 class UserAuthService
 {
@@ -15,15 +16,15 @@ class UserAuthService
         return $user;
     }
 
-public function loginUser(array $data):JsonResponse
+public function loginUser(array $data)
     {
         $user=User::where('email',$data['email'])->first();
 
         if(!$user || !password_verify($data['password'],$user->password)){
-            return response()->json(['message'=>'incorrect login details'],401);
+            throw new UnauthorizedException('Incorrect login details');
         }
         $token=$user->createToken('token-name')->plainTextToken;
-        return response()->json(['user'=>$user, 'token'=>$token], 200);
+        return ['user' => $user, 'token' => $token];
     }
     public function deleteUser(User $user):void
     {

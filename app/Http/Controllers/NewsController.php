@@ -38,7 +38,7 @@ class NewsController extends Controller
         $user = $request->user();
 
         $news = $this->newsService->createNews($data, $user);
-        return NewsResource::make($news);
+        return NewsResource::make($news)->response()->setStatusCode(200);
     }
 
     /**

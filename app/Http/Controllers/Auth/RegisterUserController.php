@@ -39,7 +39,7 @@ class RegisterUserController extends Controller
         $data = $request->validated();
         $user = $this->userAuthService->loginUser($data);
 
-
+        return response()->json(['message' => "Login successfully {$user['user']->email}", 'token' => $user['token']]);
     }
 
 }
