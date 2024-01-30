@@ -11,16 +11,12 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 
-/**
- *
-*/
 class UserController extends Controller
 {
     public function __construct(
         private readonly UserService $userService,
     ){
-//        $this->middleware('admin')->only(['store', 'update']);
-    }
+     }
 
     public function index():JsonResponse
     {

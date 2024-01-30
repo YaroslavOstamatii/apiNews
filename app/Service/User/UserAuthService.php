@@ -3,7 +3,6 @@
 namespace App\Service\User;
 
 use App\Models\User;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\UnauthorizedException;
 
@@ -24,10 +23,11 @@ public function loginUser(array $data)
             throw new UnauthorizedException('Incorrect login details');
         }
         $token=$user->createToken('token-name')->plainTextToken;
+
         return ['user' => $user, 'token' => $token];
     }
-    public function deleteUser(User $user):void
+    public function logoutUser($request):void
     {
-        $user->delete();
+        $request->user()->tokens()->delete();
     }
 }

@@ -5,41 +5,43 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\LoginUserRequest;
 use App\Http\Requests\User\RegisterUserRequest;
-use App\Models\User;
+use App\Http\Resources\User\UserResource;
 use App\Service\User\UserAuthService;
-use App\Service\User\UserService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class RegisterUserController extends Controller
 {
     public function __construct(
-       private readonly UserAuthService $userAuthService
+        private readonly UserAuthService $userAuthService
     ){
     }
 
-    public function register(RegisterUserRequest $request)
+    public function register(RegisterUserRequest $request): JsonResponse
     {
         $data = $request->validated();
         $user = $this->userAuthService->registerUser($data);
 
-        return response()->json(['message' => 'Register success','user'=>$user], 201);
+        return response()->json(['message' => 'Register success', 'user' => $user], 201);
     }
 
 
-    public function logout(Request $request)
+    public function logout(Request $request): JsonResponse
     {
-        $request->user()->tokens()->delete();
+        $this->userAuthService->logoutUser($request);
 
-        return response()->json(['message' => 'Logged out successfully'], 200);
+        return response()->json(['message' => 'Logged out successfully']);
     }
 
-    public function login(LoginUserRequest $request)
+    public function login(LoginUserRequest $request): JsonResponse
     {
         $data = $request->validated();
-        $user = $this->userAuthService->loginUser($data);
+        $userAndToken = $this->userAuthService->loginUser($data);
 
-        return response()->json(['message' => "Login successfully {$user['user']->email}", 'token' => $user['token']]);
+        return response()->json([
+            'Login successfully for user' => new UserResource($userAndToken['user']),
+            'token' => $userAndToken['token'],
+        ]);
     }
 
 }

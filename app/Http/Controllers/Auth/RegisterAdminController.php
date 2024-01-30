@@ -3,81 +3,45 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Admin;
+use App\Http\Requests\Admin\LoginAdminRequest;
+use App\Http\Requests\Admin\RegisterAdminRequest;
+use App\Http\Resources\Admin\AdminResource;
+use App\Service\Admin\AdminAuthService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class RegisterAdminController extends Controller
 {
+    public function __construct(
+        private readonly AdminAuthService $adminAuthService
+    ){
+    }
 
-    public function register(Request $request)
+    public function register(RegisterAdminRequest $request): JsonResponse
     {
-        $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|email|unique:users,email|unique:admins,email',
-            'password' => 'required|string|min:8',
-        ]);
+        $data = $request->validated();
+        $admin = $this->adminAuthService->registerAdmin($data);
 
-
-        $user = User::create([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'password' => Hash::make($request->input('password')),
-        ]);
-
-        return response()->json(['message' => 'Register success','user'=>$user], 201);
+        return response()->json(['message' => 'Register success', 'admin' => $admin], 201);
     }
 
 
-    public function logout(Request $request)
+    public function logout(Request $request): JsonResponse
     {
-        $request->user()->tokens()->delete();
+        $this->adminAuthService->logoutAdmin($request);
 
-        return response()->json(['message' => 'Logged out successfully'], 200);
+        return response()->json(['message' => 'Logged out successfully']);
     }
 
-    public function login(Request $request)
+    public function login(LoginAdminRequest $request): JsonResponse
     {
+        $data = $request->validated();
+        $adminAndToken = $this->adminAuthService->loginAdmin($data);
 
-        $user = auth()->user();
-
-        if (!$user) {
-
-            $request->validate([
-                'email' => 'required|email',
-                'password' => 'required|string',
-            ]);
-            $email = $request->input('email');
-            $password = $request->input('password');
-
-            $user = User::where('email', $email)->first();
-
-            if (!$user) {
-                $user = Admin::where('email', $email)->first();
-
-                if (!$user) {
-                    return response()->json(['message' => 'Invalid credentials'], 401);
-                }
-
-                if (!password_verify($password, $user->password)) {
-                    return response()->json(['message' => 'Invalid credentials'], 401);
-                }
-
-                $token = $user->createToken('auth-token')->plainTextToken;
-            } else {
-                if (!password_verify($password, $user->password)) {
-                    return response()->json(['message' => 'Invalid credentials'], 401);
-                }
-
-                $token = $user->createToken('auth-token')->plainTextToken;
-            }
-
-            return response()->json(['message' => 'LogIn success','User logged in'=>$user,'token'=>$token], 200);
-        }
-        else{
-            $token = auth()->user()->currentAccessToken();
-            return response()->json(['message' => 'you are Logged in ','User logged in'=>$user,'token'=>$token], 200);
-        }
+        return response()->json([
+            'Login successfully for admin' => new AdminResource($adminAndToken['admin']),
+            'token' => $adminAndToken['token'],
+        ]);
     }
 
 }
