@@ -7,9 +7,9 @@ use App\Http\Controllers\Controller;
 /**
  *
  * @OA\Get(
- *     path="/api/user",
- *     tags={"User"},
- *     summary="Get all users",
+ *     path="/apiAdmin/user",
+ *     tags={"Admin"},
+ *     summary="Get all Admin",
  *     @OA\Response(
  *         response=200,
  *         description="Successful operation",
@@ -19,7 +19,6 @@ use App\Http\Controllers\Controller;
  *                 @OA\Property(property="id", type="integer", example=1),
  *                 @OA\Property(property="name", type="string", example="Yarik"),
  *                 @OA\Property(property="email", type="string", example="yarik@yarik"),
- *                 @OA\Property(property="role", type="integer", example=1),
  *                 @OA\Property(property="created_at", type="datetime", example="2024-01-21T12:58:45.000000Z"),
  *                 @OA\Property(property="updated_at", type="datetime", example="2024-01-21T12:58:45.000000Z"),
  *             ),
@@ -33,13 +32,13 @@ use App\Http\Controllers\Controller;
  * ),
  *
  * @OA\Get(
- *     path="/api/user/{user}",
- *     tags={"User"},
+ *     path="/apiAdmin/admin/{admin}",
+ *     tags={"Admin"},
  *     summary="Get user by id",
  *     @OA\Parameter(
  *         description="user ID",
  *         in="path",
- *         name="user",
+ *         name="admin",
  *         required=true,
  *         example=1,
  *     ),
@@ -50,7 +49,6 @@ use App\Http\Controllers\Controller;
  *                 @OA\Property(property="id", type="integer", example=1),
  *                  @OA\Property(property="name", type="string", example="Yarik"),
  *                  @OA\Property(property="email", type="string", example="yarik@yarik"),
- *                  @OA\Property(property="role", type="integer", example=1),
  *                  @OA\Property(property="created_at", type="datetime", example="2024-01-21T12:58:45.000000Z"),
  *                  @OA\Property(property="updated_at", type="datetime", example="2024-01-21T12:58:45.000000Z"),
  *         ),
@@ -67,8 +65,8 @@ use App\Http\Controllers\Controller;
  * ),
  *
  * @OA\Post(
- *     path="/api/user",
- *     tags={"User"},
+ *     path="/apiAdmin/admin",
+ *     tags={"Admin"},
  *     summary="Store a new user",
  *     @OA\RequestBody(
  *               @OA\MediaType(
@@ -77,7 +75,6 @@ use App\Http\Controllers\Controller;
  *                        type="object",
  *                        @OA\Property(property="name", type="string", example="Yarik"),
  *                        @OA\Property(property="email", type="string", example="yarik@yarik"),
- *                        @OA\Property(property="role", type="integer", example=1),
  *                        @OA\Property(property="password", type="string", example="1234qwe"),
  *                        @OA\Property(property="password_confirmation", type="string", example="1234qwe"),
  *                    )
@@ -91,7 +88,6 @@ use App\Http\Controllers\Controller;
  *                 @OA\Property(property="id", type="integer", example=1),
  *                    @OA\Property(property="name", type="string", example="Yarik"),
  *                    @OA\Property(property="email", type="string", example="yarik@yarik"),
- *                    @OA\Property(property="role", type="integer", example=1),
  *             ),
  *         ),
  *     ),
@@ -99,13 +95,13 @@ use App\Http\Controllers\Controller;
  * ),
  *
  * @OA\Put(
- *     path="/api/user/{user}",
- *     tags={"User"},
+ *     path="/apiAdmin/admin/{admin}",
+ *     tags={"Admin"},
  *     summary="Update user by id",
  *     @OA\Parameter(
  *         description="user ID",
  *         in="path",
- *         name="user",
+ *         name="admin",
  *         required=true,
  *         example=1,
  *     ),
@@ -116,7 +112,6 @@ use App\Http\Controllers\Controller;
  *                         type="object",
  *                        @OA\Property(property="name", type="string", example="Yarik"),
  *                         @OA\Property(property="email", type="string", example="yarik@yarik"),
- *                         @OA\Property(property="role", type="integer", example=1),
  *                         @OA\Property(property="password", type="string", example="1234qwe"),
  *                         @OA\Property(property="password_confirmation", type="string", example="1234qwe"),
  *                     )
@@ -129,7 +124,6 @@ use App\Http\Controllers\Controller;
  *                  @OA\Property(property="id", type="integer", example=1),
  *                  @OA\Property(property="name", type="string", example="Yarik"),
  *                  @OA\Property(property="email", type="string", example="yarik@yarik"),
- *                  @OA\Property(property="role", type="integer", example=1),
  *                  @OA\Property(property="created_at", type="datetime", example="2024-01-21T12:58:45.000000Z"),
  *                  @OA\Property(property="updated_at", type="datetime", example="2024-01-21T12:58:45.000000Z"),
  *         ),
@@ -142,13 +136,13 @@ use App\Http\Controllers\Controller;
  * ),
  *
  * @OA\Delete(
- *     path="/api/user/{user}",
- *     tags={"User"},
+ *     path="/apiAdmin/admin/{admin}",
+ *     tags={"Admin"},
  *     summary="Delete user by id",
  *     @OA\Parameter(
  *         description="user ID",
  *         in="path",
- *         name="user",
+ *         name="admin",
  *         required=true,
  *         example=1,
  *     ),
@@ -165,84 +159,7 @@ use App\Http\Controllers\Controller;
  *     ),
  *     security={{"bearer": {}}}
  * ),
- * @OA\Post(
- *      path="/api/login",
- *      tags={"Login"},
- *      summary="Logs user into system",
- *      @OA\RequestBody(
- *          @OA\MediaType(
- *              mediaType="application/x-www-form-urlencoded",
- *                   @OA\Schema (
- *                       type="object",
- *                       @OA\Property(property="email", type="string", example="yarik@yarik"),
- *                       @OA\Property(property="password", type="string", example="qwerty123"),
- *                   )
- *          ),
- *      ),
- *     @OA\Response(
- *          response=200,
- *          description="Successful operation",
- *          @OA\JsonContent(
- *              @OA\Property(property="user", type="object",
- *                   @OA\Property(property="id", type="integer", example=1),
- *                   @OA\Property(property="name", type="string", example="Yarik"),
- *                   @OA\Property(property="email", type="string", example="yarik@yarik"),
- *                   @OA\Property(property="role", type="integer", example=1),
- *                   @OA\Property(property="created_at", type="datetime", example="2024-01-21T12:58:45.000000Z"),
- *                   @OA\Property(property="updated_at", type="datetime", example="2024-01-21T12:58:45.000000Z"),
- *              ),
- *              @OA\Property(property="token", type="string", example="News deleted successfully"),
- *          ),
- *      ),
- *      @OA\Response(
- *          response=401,
- *          description="incorrect login details"
- *      ),
- *  )
- *
- * @OA\Post(
- *       path="/api/register",
- *       tags={"Register"},
- *       summary="Register user in system",
- *       @OA\RequestBody(
- *       description="inputs for regisrer",
- *           @OA\MediaType(
- *               mediaType="application/x-www-form-urlencoded",
- *                    @OA\Schema (
- *                        type="object",
- *                        @OA\Property(property="name", type="string", example="Yaroslav"),
- *                        @OA\Property(property="email", type="string", example="yarik@yarik"),
- *                        @OA\Property(property="password", type="string", example="qwerty123"),
- *                        @OA\Property(property="password_confirmation", type="string", example="qwerty123"),
- *                        @OA\Property(property="role", type="integer", example=0)
- *
- *                    )
- *           )
- *       ),
- *      @OA\Response(
- *           response=200,
- *           description="Successful operation",
- *           @OA\JsonContent(
- *               @OA\Property(property="user", type="object", example={"name": "Yaroslav", "email": "yarik@yarik", "role": 0}),
- *               @OA\Property(property="message", type="string", example="User created successfully")
- *           )
- *       ),
- *       @OA\Response(
- *           response=400,
- *           description="Invalid username/password supplied"
- *       )
- *   )
- * @OA\Post(
- *        path="/api/logout",
- *        tags={"Logout"},
- *        summary="Logout user from system",
- *         security={{"bearer": {}}},
- *       @OA\Response(
- *            response=200,
- *            description="Logout",
- *        )
- *
- *    )
+
  */
 
 class AdminController extends Controller
