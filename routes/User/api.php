@@ -20,7 +20,7 @@ Route::post('/register', [RegisterUserController::class, 'register']);
 Route::post('/login', [RegisterUserController::class, 'login']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::apiResource('user',UserController::class);
+    Route::apiResource('user',UserController::class)->only('index');
     Route::apiResource('news',NewsController::class);
 
     Route::post('/logout', [RegisterUserController::class, 'logout']);

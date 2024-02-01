@@ -16,13 +16,11 @@ class CreateAdmin extends Command
         $email = $this->ask('Enter the admin email:');
         $password = $this->secret('Enter the admin password:');
 
-        $admin = Admin::create([
+        Admin::create([
             'name' => $name,
             'email' => $email,
             'password' => bcrypt($password),
         ]);
-        $token=$admin->createToken('token-name')->plainTextToken;
-        $this->info('token = '.$token);
 
         $this->info('Admin user created successfully!');
     }

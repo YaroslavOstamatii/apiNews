@@ -19,12 +19,11 @@ class RegisterUserController extends Controller
 
     public function register(RegisterUserRequest $request): JsonResponse
     {
-        $data = $request->validated();
-        $user = $this->userAuthService->registerUser($data);
-
-        return response()->json(['message' => 'Register success', 'user' => $user], 201);
+        $user = $this->userAuthService->registerUser($request);
+        return response()->json([
+            'Login successfully for user' => new UserResource($user),
+        ]);
     }
-
 
     public function logout(Request $request): JsonResponse
     {
@@ -35,13 +34,11 @@ class RegisterUserController extends Controller
 
     public function login(LoginUserRequest $request): JsonResponse
     {
-        $data = $request->validated();
-        $userAndToken = $this->userAuthService->loginUser($data);
+        $userAndToken = $this->userAuthService->loginUser($request);
 
         return response()->json([
             'Login successfully for user' => new UserResource($userAndToken['user']),
             'token' => $userAndToken['token'],
         ]);
     }
-
 }

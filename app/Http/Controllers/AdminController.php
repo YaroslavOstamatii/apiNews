@@ -3,14 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Admin\StoreAdminRequest;
-use App\Http\Requests\User\UpdateRequest;
+use App\Http\Requests\Admin\UpdateAdminRequest;
 use App\Http\Resources\Admin\AdminResource;
 use App\Models\Admin;
 use App\Service\Admin\AdminService;
-use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
 {
@@ -19,70 +16,49 @@ class AdminController extends Controller
     ){
     }
 
-    public function index():JsonResponse
+    public function index(): JsonResponse
     {
-        $admin=$this->adminService->getAllAdmin();
+        $admin = $this->adminService->getAdmins();
 
-        return $admin->isEmpty() ? response()->json(['error' => 'users is empty'], 404) : response()->json($admin);
+        return AdminResource::collection($admin)->response();
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreAdminRequest $request):AdminResource
+    public function store(StoreAdminRequest $request): AdminResource
     {
-        $data = $request->validated();
-        $admin=$this->adminService->createAdmin($data);
+        $admin = $this->adminService->createAdmin($request);
 
-        return new AdminResource($admin);
+        return AdminResource::make($admin);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Admin $admin):JsonResponse
+    public function show(Admin $admin): AdminResource
     {
-        try {
-            $admin = Admin::find($admin);
-
-            return response()->json($admin, 200);
-        }   catch (Exception $exception) {
-
-            return response()->json(['error' => $exception->getMessage()], 400);
-        }
+        return AdminResource::make($admin);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRequest $request, string $admin):JsonResponse
+    public function update(UpdateAdminRequest $request, Admin $admin): AdminResource
     {
-        $data = $request->validated();
+        $admin = $this->adminService->updateAdmin($request, $admin);
 
-        try {
-            $admin = $this->adminService->updateAdmin($data, $admin);
-            return response()->json($admin, 200);
-        } catch (Exception $exception) {
-
-            return response()->json(['error' => $exception->getMessage()], 400);
-        }
-
+        return AdminResource::make($admin);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $admin):JsonResponse
+    public function destroy(Admin $admin): JsonResponse
     {
-        try {
-            $admin = Admin::findOrFail($admin);
-            $this->adminService->deleteAdmin($admin);
+        $this->adminService->deleteAdmin($admin);
 
-            return response()->json(['message' => 'Admin deleted successfully'], 200);
-        } catch (Exception $exception) {
-            Log::error($exception->getMessage());
+        return response()->json(['message' => 'Admin deleted successfully']);
 
-            return response()->json(['error' => 'Failed to delete user'], 400);
-        }
     }
 }

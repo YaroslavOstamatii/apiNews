@@ -19,10 +19,11 @@ class RegisterAdminController extends Controller
 
     public function register(RegisterAdminRequest $request): JsonResponse
     {
-        $data = $request->validated();
-        $admin = $this->adminAuthService->registerAdmin($data);
+        $admin = $this->adminAuthService->registerAdmin($request);
 
-        return response()->json(['message' => 'Register success', 'admin' => $admin], 201);
+        return response()->json([
+            'Login successfully for admin' => new AdminResource($admin),
+        ]);
     }
 
 
@@ -35,8 +36,7 @@ class RegisterAdminController extends Controller
 
     public function login(LoginAdminRequest $request): JsonResponse
     {
-        $data = $request->validated();
-        $adminAndToken = $this->adminAuthService->loginAdmin($data);
+        $adminAndToken = $this->adminAuthService->loginAdmin($request);
 
         return response()->json([
             'Login successfully for admin' => new AdminResource($adminAndToken['admin']),

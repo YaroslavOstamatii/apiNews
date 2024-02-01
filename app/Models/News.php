@@ -12,12 +12,15 @@ class News extends Model
     protected $fillable = [
         'title',
         'text',
-//        'image',
         'is_active',
     ];
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+    public function newsable()
+    {
+        return $this->morphTo();
     }
 }

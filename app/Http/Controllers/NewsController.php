@@ -7,9 +7,7 @@ use App\Http\Requests\News\UpdateNewsRequest;
 use App\Http\Resources\News\NewsResource;
 use App\Models\News;
 use App\Service\News\NewsService;
-use Exception;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Http\JsonResponse;
 
 class NewsController extends Controller
 {
@@ -21,80 +19,50 @@ class NewsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        $news = News::all();
+        $news = $this->newsService->getAllNews();
 
-        return $news->isEmpty() ? response()->json(['error' => 'News is empty'], 404) : response()->json($news);
+        return NewsResource::collection($news)->response();
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreNewsRequest $request)
+    public function store(StoreNewsRequest $request): NewsResource
     {
-        $data = $request->validated();
+        $news = $this->newsService->createNews($request);
 
-        $user = $request->user();
-
-        $news = $this->newsService->createNews($data, $user);
-        return NewsResource::make($news)->response()->setStatusCode(200);
+        return NewsResource::make($news);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $news)
+    public function show(News $news): NewsResource
     {
-
-        try {
-            $news = News::findOrFail($news);
-            return response()->json($news, 200);
-        } catch (ModelNotFoundException $exception) {
-
-            return response()->json(['error' => 'News not found'], 404);
-        } catch (Exception $exception) {
-
-            return response()->json(['error' => $exception->getMessage()], 400);
-        }
+        return NewsResource::make($news);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateNewsRequest $request, string $news)
+    public function update(UpdateNewsRequest $request, News $news): NewsResource
     {
-        $data = $request->validated();
-        try {
-            $news = $this->newsService->updateNews($data, $news);
-            return response()->json($news, 200);
-        } catch (ModelNotFoundException $exception) {
+        $this->authorize('update', $news);
+        $news = $this->newsService->updateNews($request, $news);
 
-            return response()->json(['error' => 'News not found'], 404);
-        } catch (Exception $exception) {
-
-            return response()->json(['error' => $exception->getMessage()], 400);
-        }
+        return NewsResource::make($news);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $news)
+    public function destroy(News $news): JsonResponse
     {
-        try {
-            $news = News::findOrFail($news);
-            $this->newsService->deleteNews($news);
+        $this->authorize('delete', $news);
+        $this->newsService->deleteNews($news);
 
-            return response()->json(['message' => 'News deleted successfully'], 200);
-        } catch (ModelNotFoundException $exception) {
-
-            return response()->json(['error' => 'News not found'], 404);
-        } catch (Exception $exception) {
-            Log::error($exception->getMessage());
-
-            return response()->json(['error' => 'Failed to delete news'], 400);
-        }
-
+        return response()->json(['message'=>'delete successful']);
     }
 }

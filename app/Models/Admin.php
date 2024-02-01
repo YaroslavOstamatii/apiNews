@@ -5,12 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 class Admin extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
+
     protected $fillable = [
         'name',
         'email',
@@ -24,8 +26,8 @@ class Admin extends Model
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-    public function news(): HasMany
+    public function news(): MorphMany
     {
-        return $this->hasMany(News::class);
+        return $this->morphMany(News::class, 'newsable');
     }
 }

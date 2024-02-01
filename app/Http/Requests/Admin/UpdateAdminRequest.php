@@ -22,9 +22,9 @@ class UpdateAdminRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['string'],
+            'name' => ['string','max:255'],
             'email' => ['string', 'email', 'max:255'],
-            'password' => ['string', 'min:8'],
+            'password' => ['string', 'min:8','max:255'],
         ];
     }
 }

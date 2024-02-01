@@ -2,32 +2,35 @@
 
 namespace App\Service\News;
 
+use App\Http\Requests\News\StoreNewsRequest;
+use App\Http\Requests\News\UpdateNewsRequest;
 use App\Models\News;
-use App\Models\User;
-use Exception;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Collection;
 
 class NewsService
 {
-    public function createNews(array $data,  User $user)
+    public function getAllNews(): Collection
     {
-        $news = new News();
-        $news->title = $data['title'];
-        $news->text = $data['text'];
-        $news->user()->associate($user);
-        $news->save();
+        return News::all();
+    }
+    public function createNews(StoreNewsRequest $request): News
+    {
+        $data = $request->validated();
+        $user = $request->user();
+        $news = $user->news()->create($data);
+
         return $news;
     }
 
-    public function updateNews($data, $news)
+    public function updateNews(UpdateNewsRequest $request, News $news): News
     {
-        $news=News::findOrFail($news);
+        $data = $request->validated();
         $news->update($data);
+
         return $news;
     }
 
-    public function deleteNews(News $news)
+    public function deleteNews($news)
     {
         $news->delete();
     }

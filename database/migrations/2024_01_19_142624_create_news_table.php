@@ -16,9 +16,10 @@ return new class extends Migration {
             $table->text('text')->nullable();
             $table->text('image')->nullable();
             $table->boolean('is_active')->default(true);
-            $table->dateTime('published_at')->default(now());
+            $table->dateTime('published_at')->nullable();
 
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->integer('newsable_id');
+            $table->string('newsable_type');
 
             $table->timestamps();
         });

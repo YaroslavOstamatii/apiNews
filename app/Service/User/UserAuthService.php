@@ -2,31 +2,36 @@
 
 namespace App\Service\User;
 
+use App\Http\Requests\User\LoginUserRequest;
+use App\Http\Requests\User\RegisterUserRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\UnauthorizedException;
 
 class UserAuthService
 {
-    public function registerUser(array $data): User
+    public function registerUser(RegisterUserRequest $request): User
     {
-        $data['password']=Hash::make($data['password']);
-        $user=User::create($data);
-        return $user;
+        $data = $request->validated();
+        $data['password'] = Hash::make($data['password']);
+
+        return User::create($data);
     }
 
-public function loginUser(array $data)
+    public function loginUser(LoginUserRequest $request): array
     {
-        $user=User::where('email',$data['email'])->first();
+        $data = $request->validated();
+        $user = User::where('email', $data['email'])->first();
 
-        if(!$user || !password_verify($data['password'],$user->password)){
+        if (!$user || !password_verify($data['password'], $user->password)) {
             throw new UnauthorizedException('Incorrect login details');
         }
-        $token=$user->createToken('token-name')->plainTextToken;
+        $token = $user->createToken('token-user')->plainTextToken;
 
         return ['user' => $user, 'token' => $token];
     }
-    public function logoutUser($request):void
+
+    public function logoutUser($request): void
     {
         $request->user()->tokens()->delete();
     }
