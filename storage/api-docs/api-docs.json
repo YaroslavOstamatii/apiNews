@@ -646,6 +646,346 @@
                 ]
             }
         },
+        "/apiAdmin/news": {
+            "get": {
+                "tags": [
+                    "NewsAdmin"
+                ],
+                "summary": "Get all new news",
+                "operationId": "4e9ff8a0f723f8822b2dd649b0e7eb5a",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "title": {
+                                                "type": "string",
+                                                "example": "News Text"
+                                            },
+                                            "text": {
+                                                "type": "string",
+                                                "example": "News Text"
+                                            },
+                                            "published_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "example": "1900-01-01 12:00:00"
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "example": "2024-01-21T12:58:45.000000Z"
+                                            },
+                                            "updated_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "example": "2024-01-21T12:58:45.000000Z"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "NewsAdmin"
+                ],
+                "summary": "Store a new news",
+                "operationId": "efdfb3a5e68948c9d3ec33d2085c626f",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "title": {
+                                                "type": "string",
+                                                "example": "News Title"
+                                            },
+                                            "text": {
+                                                "type": "string",
+                                                "example": "News Text"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "title": {
+                                                    "type": "string",
+                                                    "example": "News Text"
+                                                },
+                                                "text": {
+                                                    "type": "string",
+                                                    "example": "News Text"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/apiAdmin/news/{post}": {
+            "get": {
+                "tags": [
+                    "NewsAdmin"
+                ],
+                "summary": "Get news by id",
+                "operationId": "b8827140173956df88a51be571b3676e",
+                "parameters": [
+                    {
+                        "name": "post",
+                        "in": "path",
+                        "description": "news ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "example": "News Text"
+                                        },
+                                        "text": {
+                                            "type": "string",
+                                            "example": "News Text"
+                                        },
+                                        "image": {
+                                            "type": "string",
+                                            "example": "img"
+                                        },
+                                        "is_active": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "published_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "1900-01-01 12:00:00"
+                                        },
+                                        "user_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2024-01-21T12:58:45.000000Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2024-01-21T12:58:45.000000Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "NewsAdmin"
+                ],
+                "summary": "Update news by id",
+                "operationId": "1d7436ae9721b532c4dd74807f2e487f",
+                "parameters": [
+                    {
+                        "name": "post",
+                        "in": "path",
+                        "description": "news ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "title": {
+                                                "type": "string",
+                                                "example": "Edit News Title"
+                                            },
+                                            "text": {
+                                                "type": "string",
+                                                "example": "Edit News Text"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "example": "News Text"
+                                        },
+                                        "text": {
+                                            "type": "string",
+                                            "example": "News Text"
+                                        },
+                                        "image": {
+                                            "type": "string",
+                                            "example": "img"
+                                        },
+                                        "is_active": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "published_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "1900-01-01 12:00:00"
+                                        },
+                                        "user_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2024-01-21T12:58:45.000000Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2024-01-21T12:58:45.000000Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "NewsAdmin"
+                ],
+                "summary": "Delete news by id",
+                "operationId": "5c87636f266ef333caba836b421d660a",
+                "parameters": [
+                    {
+                        "name": "post",
+                        "in": "path",
+                        "description": "news ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "News deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
         "/api/news": {
             "get": {
                 "tags": [
@@ -674,22 +1014,10 @@
                                                 "type": "string",
                                                 "example": "News Text"
                                             },
-                                            "image": {
-                                                "type": "string",
-                                                "example": "img"
-                                            },
-                                            "is_active": {
-                                                "type": "integer",
-                                                "example": 1
-                                            },
                                             "published_at": {
                                                 "type": "string",
                                                 "format": "date-time",
                                                 "example": "1900-01-01 12:00:00"
-                                            },
-                                            "user_id": {
-                                                "type": "integer",
-                                                "example": 1
                                             },
                                             "created_at": {
                                                 "type": "string",
