@@ -6,13 +6,13 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/apiAdmin/user": {
+        "/apiAdmin/admin": {
             "get": {
                 "tags": [
                     "Admin"
                 ],
                 "summary": "Get all Admin",
-                "operationId": "41e1276938490f9c3b19940776b10eb5",
+                "operationId": "0d591b738bde515199fd992802aefa0d",
                 "responses": {
                     "200": {
                         "description": "Successful operation",
@@ -53,6 +53,76 @@
                     },
                     "404": {
                         "description": "users empty"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Store a new user",
+                "operationId": "35ad0cfdea2bcdc0be4f6522f54a1683",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Yarik"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "yarik@yarik"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "1234qwe"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "example": "1234qwe"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Yarik"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "yarik@yarik"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -247,78 +317,6 @@
                     },
                     "404": {
                         "description": "not found"
-                    }
-                },
-                "security": [
-                    {
-                        "bearer": []
-                    }
-                ]
-            }
-        },
-        "/apiAdmin/admin": {
-            "post": {
-                "tags": [
-                    "Admin"
-                ],
-                "summary": "Store a new user",
-                "operationId": "35ad0cfdea2bcdc0be4f6522f54a1683",
-                "requestBody": {
-                    "content": {
-                        "application/x-www-form-urlencoded": {
-                            "schema": {
-                                "properties": {
-                                    "name": {
-                                        "type": "string",
-                                        "example": "Yarik"
-                                    },
-                                    "email": {
-                                        "type": "string",
-                                        "example": "yarik@yarik"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "example": "1234qwe"
-                                    },
-                                    "password_confirmation": {
-                                        "type": "string",
-                                        "example": "1234qwe"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "ok",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "data": {
-                                            "properties": {
-                                                "id": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "name": {
-                                                    "type": "string",
-                                                    "example": "Yarik"
-                                                },
-                                                "email": {
-                                                    "type": "string",
-                                                    "example": "yarik@yarik"
-                                                }
-                                            },
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
                     }
                 },
                 "security": [

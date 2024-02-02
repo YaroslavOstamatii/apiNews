@@ -2,6 +2,7 @@
 
 namespace App\Service\Admin;
 
+use App\Http\Requests\Admin\StoreAdminRequest;
 use App\Http\Requests\Admin\UpdateAdminRequest;
 use App\Models\Admin;
 use Illuminate\Database\Eloquent\Collection;
@@ -14,7 +15,7 @@ class AdminService
         return Admin::all();
     }
 
-    public function createAdmin($request): Admin
+    public function createAdmin(StoreAdminRequest $request): Admin
     {
         $data = $request->validated();
         $data['password'] = Hash::make($data['password']);
@@ -26,10 +27,11 @@ class AdminService
     {
         $data = $request->validated();
         $admin->update($data);
+
         return $admin;
     }
 
-    public function deleteAdmin($admin): void
+    public function deleteAdmin(Admin $admin): void
     {
         $admin->delete();
     }

@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 /**
  *
  * @OA\Get(
- *     path="/apiAdmin/user",
+ *     path="/apiAdmin/admin",
  *     tags={"Admin"},
  *     summary="Get all Admin",
  *     @OA\Response(

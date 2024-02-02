@@ -18,10 +18,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [RegisterUserController::class, 'register']);
 Route::post('/login', [RegisterUserController::class, 'login']);
+Route::apiResource('news',NewsController::class)->only('index');
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('user',UserController::class)->only('index');
-    Route::apiResource('news',NewsController::class);
+    Route::apiResource('news',NewsController::class)->except('index');
 
     Route::post('/logout', [RegisterUserController::class, 'logout']);
 });

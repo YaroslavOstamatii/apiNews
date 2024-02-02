@@ -12,7 +12,7 @@ use App\Http\Controllers\Controller;
  * ),
  *
  * @OA\Get(
- *     path="/api/news",
+ *     path="/apiAdmin/news",
  *     tags={"News"},
  *     summary="Get all new news",
  *     @OA\Response(
@@ -33,7 +33,7 @@ use App\Http\Controllers\Controller;
  * ),
  *
  * @OA\Get(
- *     path="/api/news/{post}",
+ *     path="/apiAdmin/news/{post}",
  *     tags={"News"},
  *     summary="Get news by id",
  *     @OA\Parameter(
@@ -162,6 +162,6 @@ use App\Http\Controllers\Controller;
  * ),
  */
 
-class NewsController extends Controller
+class NewsAdminController extends Controller
 {
 }
