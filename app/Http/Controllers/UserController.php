@@ -15,23 +15,24 @@ class UserController extends Controller
 {
     public function __construct(
         private readonly UserService $userService,
-    ){
-     }
-
-    public function index():JsonResponse
+    )
     {
-        $user=User::all();
+    }
 
-        return $user->isEmpty() ? response()->json(['error' => 'users is empty'], 404) : response()->json($user);
+
+    public function index(): JsonResponse
+    {
+        $users = $this->userService->getAllUsers();
+
+        return UserResource::collection($users)->response();
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUserRequest $request):UserResource
+    public function store(StoreUserRequest $request): UserResource
     {
-        $data = $request->validated();
-        $user=$this->userService->createUser($data);
+        $user = $this->userService->createUser($request);
 
         return new UserResource($user);
     }
@@ -39,52 +40,28 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $user):JsonResponse
+    public function show(User $user): UserResource
     {
-        try {
-            $user = User::findOrFail($user);
-
-            return response()->json($user, 200);
-        } catch (Exception $exception) {
-
-            return response()->json(['error' => $exception->getMessage()], 400);
-        }
+        return UserResource::make($user);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRequest $request, string $user):JsonResponse
+    public function update(UpdateRequest $request, User $user): UserResource
     {
-//        $this->authorize('update', auth()->user());
-        $data = $request->validated();
+        $user = $this->userService->updateUser($request, $user);
 
-        try {
-            $user = $this->userService->updateUser($data, $user);
-            return response()->json($user, 200);
-        } catch (Exception $exception) {
-
-            return response()->json(['error' => $exception->getMessage()], 400);
-        }
-
+        return UserResource::make($user);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $user):JsonResponse
+    public function destroy(User $user): JsonResponse
     {
-        try {
-            $user = User::findOrFail($user);
-            $this->userService->deleteUser($user);
+        $this->userService->deleteUser($user);
 
-            return response()->json(['message' => 'User deleted successfully'], 200);
-        } catch (Exception $exception) {
-            Log::error($exception->getMessage());
-
-            return response()->json(['error' => 'Failed to delete user'], 400);
-        }
+        return response()->json(['message' => 'User deleted successfully']);
     }
-
-
 }

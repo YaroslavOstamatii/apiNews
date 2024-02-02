@@ -2,49 +2,36 @@
 
 namespace App\Service\User;
 
+use App\Http\Requests\User\StoreUserRequest;
+use App\Http\Requests\User\UpdateRequest;
 use App\Models\User;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
-    public function createUser(array $data):User
+    public function getAllUsers(): Collection
     {
+        return User::all();
+    }
+    public function createUser(StoreUserRequest $request): User
+    {
+        $data = $request->validated();
         $data['password']=Hash::make($data['password']);
         $user=User::create($data);
+
         return $user;
     }
 
-    public function updateUser($data, $user):User
+    public function updateUser(UpdateRequest $request, User $user): User
     {
-        $user = User::findOrFail($user);
+        $data = $request->validated();
         $user->update($data);
+
         return $user;
     }
 
-
-    public function registerUser(array $data):JsonResponse
-    {
-        $user= User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
-        $token=$user->createToken('token-name', ['*'], now()->addHour())->plainTextToken;
-
-        return response()->json(['user'=>$user, 'token'=>$token], 200);
-    }
-public function loginUser(array $data):JsonResponse
-    {
-        $user=User::where('email',$data['email'])->first();
-
-        if(!$user || !Hash::check($data['password'],$user->password)){
-            return response()->json(['message'=>'incorrect login details'],401);
-        }
-        $token=$user->createToken('token-name', ['*'], now()->addHour())->plainTextToken;
-        return response()->json(['user'=>$user, 'token'=>$token], 200);
-    }
-    public function deleteUser(User $user):void
+    public function deleteUser(User $user): void
     {
         $user->delete();
     }
