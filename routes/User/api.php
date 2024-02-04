@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\Auth\RegisterUserController;
-use App\Http\Controllers\NewsController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\News\User\NewsUserController;
+use App\Http\Controllers\User\Auth\RegisterUserController;
+use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,11 +18,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [RegisterUserController::class, 'register']);
 Route::post('/login', [RegisterUserController::class, 'login']);
-Route::apiResource('news',NewsController::class)->only('index');
+Route::apiResource('news',NewsUserController::class)->only('index');
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('user',UserController::class)->only('index');
-    Route::apiResource('news',NewsController::class)->except('index');
+    Route::apiResource('news',NewsUserController::class);
 
     Route::post('/logout', [RegisterUserController::class, 'logout']);
 });

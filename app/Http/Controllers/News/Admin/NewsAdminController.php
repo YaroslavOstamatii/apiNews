@@ -1,29 +1,31 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\News\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\News\StoreNewsRequest;
 use App\Http\Requests\News\UpdateNewsRequest;
 use App\Http\Resources\News\NewsResource;
 use App\Models\News;
-use App\Service\News\NewsService;
+use App\Service\News\NewsAdminService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
-class NewsController extends Controller
+class NewsAdminController extends Controller
 {
     public function __construct(
-        private readonly NewsService $newsService,
+        private readonly NewsAdminService $newsService,
     ){
     }
 
     /**
      * Display a listing of the resource.
      */
-    public function index(): JsonResponse
+    public function index(): AnonymousResourceCollection
     {
         $news = $this->newsService->getAllNews();
 
-        return NewsResource::collection($news)->response();
+        return NewsResource::collection($news);
     }
 
     /**
@@ -31,9 +33,12 @@ class NewsController extends Controller
      */
     public function store(StoreNewsRequest $request): NewsResource
     {
-        $news = $this->newsService->createNews($request);
+        $data = $request->validated();
+        $user = $request->user();
 
-        return NewsResource::make($news);
+        $news = $this->newsService->createNews($data,$user);
+
+        return new NewsResource($news);
     }
 
     /**
@@ -41,7 +46,7 @@ class NewsController extends Controller
      */
     public function show(News $news): NewsResource
     {
-        return NewsResource::make($news);
+        return new NewsResource($news);
     }
 
     /**
@@ -50,9 +55,10 @@ class NewsController extends Controller
     public function update(UpdateNewsRequest $request, News $news): NewsResource
     {
         $this->authorize('update', $news);
-        $news = $this->newsService->updateNews($request, $news);
+        $data = $request->validated();
+        $news = $this->newsService->updateNews($data, $news);
 
-        return NewsResource::make($news);
+        return new NewsResource($news);
     }
 
     /**

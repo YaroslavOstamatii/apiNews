@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\LoginAdminRequest;
@@ -19,7 +19,8 @@ class RegisterAdminController extends Controller
 
     public function register(RegisterAdminRequest $request): JsonResponse
     {
-        $admin = $this->adminAuthService->registerAdmin($request);
+        $data = $request->validated();
+        $admin = $this->adminAuthService->registerAdmin($data);
 
         return response()->json([
             'Login successfully for admin' => new AdminResource($admin),
@@ -36,7 +37,8 @@ class RegisterAdminController extends Controller
 
     public function login(LoginAdminRequest $request): JsonResponse
     {
-        $adminAndToken = $this->adminAuthService->loginAdmin($request);
+        $data = $request->validated();
+        $adminAndToken = $this->adminAuthService->loginAdmin($data);
 
         return response()->json([
             'Login successfully for admin' => new AdminResource($adminAndToken['admin']),

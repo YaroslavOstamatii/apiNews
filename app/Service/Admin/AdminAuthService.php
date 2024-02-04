@@ -2,35 +2,32 @@
 
 namespace App\Service\Admin;
 
-use App\Http\Requests\Admin\LoginAdminRequest;
-use App\Http\Requests\Admin\RegisterAdminRequest;
 use App\Models\Admin;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\UnauthorizedException;
 
 class AdminAuthService
 {
-    public function registerAdmin(RegisterAdminRequest $request): Admin
+    public function registerAdmin(array $data): Admin
     {
-        $data = $request->validated();
-        $data['password']=Hash::make($data['password']);
+        $data['password'] = Hash::make($data['password']);
 
-        return Admin::create($data);
+        return new Admin($data);
     }
 
-public function loginAdmin(LoginAdminRequest $request): array
+public function loginAdmin(array $data): array
     {
-        $data = $request->validated();
-        $admin=Admin::where('email',$data['email'])->first();
 
-        if(!$admin || !password_verify($data['password'],$admin->password)){
+        $admin = Admin::where('email', $data['email'])->first();
+
+        if(!$admin || !password_verify($data['password'], $admin->password)){
             throw new UnauthorizedException('Incorrect login details');
         }
-        $token=$admin->createToken('token-admin')->plainTextToken;
+        $token = $admin->createToken('token-admin')->plainTextToken;
 
         return ['admin' => $admin, 'token' => $token];
     }
-    public function logoutAdmin($request):void
+    public function logoutAdmin($request): void
     {
         $request->user()->tokens()->delete();
     }

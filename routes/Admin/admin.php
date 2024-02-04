@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\Auth\RegisterAdminController;
-use App\Http\Controllers\NewsController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\Auth\RegisterAdminController;
+use App\Http\Controllers\News\Admin\NewsAdminController;
+use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,7 +22,7 @@ Route::post('/login', [RegisterAdminController::class, 'login']);
 
 Route::middleware(['auth:sanctum','admin'])->group(function () {
     Route::apiResource('admin',AdminController::class);
-    Route::apiResource('news',NewsController::class);
+    Route::apiResource('news',NewsAdminController::class);
     Route::apiResource('user',UserController::class);
 
     Route::post('/logout', [RegisterAdminController::class, 'logout']);

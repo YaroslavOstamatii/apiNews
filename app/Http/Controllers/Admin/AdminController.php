@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreAdminRequest;
 use App\Http\Requests\Admin\UpdateAdminRequest;
 use App\Http\Resources\Admin\AdminResource;
 use App\Models\Admin;
 use App\Service\Admin\AdminService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class AdminController extends Controller
 {
@@ -16,11 +18,11 @@ class AdminController extends Controller
     ){
     }
 
-    public function index(): JsonResponse
+    public function index(): AnonymousResourceCollection
     {
         $admin = $this->adminService->getAdmins();
 
-        return AdminResource::collection($admin)->response();
+        return AdminResource::collection($admin);
     }
 
     /**
@@ -28,9 +30,10 @@ class AdminController extends Controller
      */
     public function store(StoreAdminRequest $request): AdminResource
     {
-        $admin = $this->adminService->createAdmin($request);
+        $data = $request->validated();
+        $admin = $this->adminService->createAdmin($data);
 
-        return AdminResource::make($admin);
+        return new AdminResource($admin);
     }
 
     /**
@@ -38,7 +41,7 @@ class AdminController extends Controller
      */
     public function show(Admin $admin): AdminResource
     {
-        return AdminResource::make($admin);
+        return new AdminResource($admin);
     }
 
     /**
@@ -46,9 +49,10 @@ class AdminController extends Controller
      */
     public function update(UpdateAdminRequest $request, Admin $admin): AdminResource
     {
-        $admin = $this->adminService->updateAdmin($request, $admin);
+        $data = $request->validated();
+        $admin = $this->adminService->updateAdmin($data, $admin);
 
-        return AdminResource::make($admin);
+        return new AdminResource($admin);
     }
 
     /**
@@ -59,6 +63,5 @@ class AdminController extends Controller
         $this->adminService->deleteAdmin($admin);
 
         return response()->json(['message' => 'Admin deleted successfully']);
-
     }
 }
